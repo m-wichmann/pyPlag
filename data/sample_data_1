@@ -1,0 +1,7 @@
+Das Projekt selbst versteht sich als klassisches Mediacenter, welches üblicherweise im Wohnzimmer an einem regulären Fernseher betrieben und mit einer Fernbedienung gesteuert wird. Derzeit existiert, anders als bei Mediacenter-Programmen wie Windows Media Center, MediaPortal oder MythTV, keine Funktion, ein Fernsehsignal über eine Fernsehkarte anzuzeigen bzw. ein laufendes TV-Programm aufzunehmen. Mit MythBox gibt es allerdings ein MythTV Frontend für XBMC.
+
+Bedient wird die Software per Maus (Computer), Tastatur, Joypad, Fernbedienung, Webinterface, Wiimote oder durch ein WLAN-/Bluetooth-Handy. Die Oberfläche ist durch Skins vollständig veränderbar.
+
+Da die ISO 26262 der Hochschule nicht zur Verfügung steht und es aufgrund des aktuellen Veröffentlichkeitsdatums des Standards nur wenig Literatur dazu existiert, basiert diese Ausarbeitung vor allem auf. Dieses Buch thematisiert vor allem den DIN EN 61508 Standard, betrachtet jedoch auch in einem recht Ausführlichen Kapitel den ISO 26262 Standard. Aus diesem Grund werden die Informationen im weiteren vor allem aus dem genannten Buch stammen und es werden keine direkten Zitate aus der Norm verwendet. Es werden jedoch vor allem Diagramme aus dem Buch übernommen, die so direkt aus der Norm stammen.
+
+Nachdem nun sowohl Fahrbedingungen und mögliche Fehler aufgelistet wurden, werden nun die möglichen Risiken betrachtet. Hierzu werden alle Zustände mit allen Risiken untersucht und nach einem vorgegebenen Schema bewertet. Dieses Schema ist wie folgt aufgebaut:

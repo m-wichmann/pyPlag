@@ -1,0 +1,94 @@
+@charset "UTF-8";
+/**
+* pyPlag Stylesheet
+*
+* Common styles for screens
+*
+* @copyright       Copyright 2012, Christian Wichmann
+* @license         CC-A 3.0 (http://creativecommons.org/licenses/by-nc/3.0/de/),
+* @version         0.1
+*/
+
+/* --- main elements ---------------------------------------------------------*/
+html {
+	height: 100%;
+	width: 100%;
+}
+
+body {
+	margin: 2em;
+	font-size: 11pt;  /* equals 100%*/
+	font-family: Helvetica, Arial, sans-serif;
+	background-color: #e6e6e6;
+}
+
+.above0 {
+	background: green;
+}
+
+.above2 {
+	background: yellow;
+}
+
+.above5 {
+	background: red;
+}
+
+.above10 {
+	background: blue;
+}
+
+#text {
+	float: left;
+	width: 70%;
+	margin: 1em;
+	text-align: left;
+	font-size: 100%;
+	font-family: Helvetica, Arial, sans-serif;
+	line-height: 1.25em;
+}
+
+#legend {
+	float: right;
+	width: 20%;
+	margin: 1em;
+}
+
+
+/* --- text markup -----------------------------------------------------------*/
+
+h1 {
+	font-size: 175%;
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight: 100;
+	letter-spacing: 0.25em;
+	text-shadow: #AAA 2px 2px 2px;
+	border-bottom: 1px solid black;
+	padding: 0 0 0.25em 0;
+}
+
+h2 {
+	font-size: 100%;
+	font-family: Helvetica, Arial, sans-serif;
+	font-style: italic;
+}
+
+h3 {
+	font-size: 100%;
+	font-family: Garamond, Baskerville, "Times New Roman", serif;
+}
+
+h4 {
+	font-size: 100%;
+	font-weight: bold;
+	font-family: Garamond, Baskerville, "Times New Roman", serif;
+}
+
+strong, b { 
+	font-weight: bold; 
+}
+
+em, i { 
+	font-style: italic; 
+}
+
