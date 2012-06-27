@@ -162,7 +162,7 @@ def checkforplag_uppercase(path):
             continue
 
         # split line into sentences if it ends with .!?
-        # TODO: a sentece should only start with a capital letter! Otherwise abbreviations like e.g. are also recognized
+        # TODO: a sentence should only start with a capital letter! Otherwise abbreviations like e.g. are also recognized
         sentences = re.split(r'\s*[!?.]\s*', line)
 
         for sentence in sentences:
@@ -211,6 +211,18 @@ def outputtohtml(path, data):
     fd.write('</head>')
     fd.write('<body>')
 
+    fd.write('<div id="legend">')
+    fd.write('<table>')
+    fd.write('<tr><td><span class="above0">Über ' + str(THRESH_ABOVE0) + ' gefundene Stellen</span></td></tr>')
+    fd.write('<tr><td><span class="above2">Über ' + str(THRESH_ABOVE2) + ' gefundene Stellen</span></td></tr>')
+    fd.write('<tr><td><span class="above5">Über ' + str(THRESH_ABOVE5) + ' gefundene Stellen</span></td></tr>')
+    fd.write('<tr><td><span class="above10">Über ' + str(THRESH_ABOVE10) + ' gefundene Stellen</span></td></tr>')
+    fd.write('</table>')
+    fd.write('</div>')
+    fd.write('<div id="text">')
+
+
+
     # TODO: don't do the color thing on a word basis, but on a substring basis
     for entry in data:
         if entry["count"] > THRESH_ABOVE10:
@@ -228,13 +240,15 @@ def outputtohtml(path, data):
         else:
             fd.write(entry["word"] + ' ')
 
+    fd.write('</div>')
     fd.write("</body>")
     fd.write("</html>")
 
 
 def googlesearch(searchfor):
+    # TODO: this parser depends on the language of the result page. This _has_ to be improved!!!
     """use http google site to search"""
-    url = 'http://www.google.com/search?q=%22' + urllib.quote(str(searchfor)) + '%22'
+    url = 'http://www.google.de/search?q=%22' + urllib.quote(str(searchfor)) + '%22'
 
     # set user agent, so we won't get banned...
     headers = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:12.0) Gecko/20100101 Firefox/12.0' }
@@ -248,7 +262,6 @@ def googlesearch(searchfor):
     temp2 = search_results.find("Ergebnisse<nobr>")
 
     if temp1 != -1 and temp2 != -1:
-        # TODO: this only works with german google...
         if search_results.find("Ungefähr") != -1:
             numstring = search_results[temp1 + 30:temp2 - 1]
         else:
