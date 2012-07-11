@@ -36,6 +36,7 @@ import json
 import re
 import urllib
 import urllib2
+import random
 from optparse import OptionParser
 
 # Threshhold values for the output colors
@@ -251,7 +252,22 @@ def googlesearch(searchfor):
     url = 'http://www.google.de/search?q=%22' + urllib.quote(str(searchfor)) + '%22'
 
     # set user agent, so we won't get banned...
-    headers = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:12.0) Gecko/20100101 Firefox/12.0' }
+    userAgents = (
+        'Opera/9.80 (X11; Linux i686; U; de) Presto/2.10.229 Version/11.64',
+        'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729',
+        'Mozilla/5.0 (Windows NT 5.2; WOW64; rv:13.0) Gecko/20100101 Firefox/13.0',
+        'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.21 Safari/536.11',
+        'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.2)',
+        'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.3; ips-agent) Gecko/20090824 Fedora/1.0.7-1.1.fc4 Firefox/3.5.3',
+        'Mozilla/5.0 (Windows NT 5.1; rv:12.0) Gecko/20100101 Firefox/12.0',
+        'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.52 Safari/536.5',
+        'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3',
+        'Opera/9.80 (Android; Opera Mini/7.0.29952/27.1993; U; de) Presto/2.8.119 Version/11.10)',
+        'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:12.0) Gecko/20100101 Firefox/12.0'
+    )
+    headers = { 'User-Agent' : random.choice(userAgents) }
+
+#    headers = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:12.0) Gecko/20100101 Firefox/12.0' }
     request = urllib2.Request(url, None, headers)
 
     # open url

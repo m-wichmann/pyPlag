@@ -22,6 +22,7 @@ body {
 	background-color: #e6e6e6;
 }
 
+/*
 .above0 {
 	background: green;
 }
@@ -37,6 +38,24 @@ body {
 .above10 {
 	background: blue;
 }
+*/
+
+.above0 {
+	background: red;
+}
+ 
+.above2 {
+	background: yellow;
+}
+ 
+.above5 {
+	background: blue;
+}
+ 
+.above10 {
+	background: green;
+}
+ 
 
 #text {
 	float: left;
