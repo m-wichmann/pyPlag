@@ -249,7 +249,7 @@ def outputtohtml(path, data):
 def googlesearch(searchfor):
     # TODO: this parser depends on the language of the result page. This _has_ to be improved!!!
     """use http google site to search"""
-    url = 'http://www.google.de/search?q=%22' + urllib.quote(str(searchfor)) + '%22'
+    url = 'http://www.google.de/search?hl=de&q=%22' + urllib.quote(str(searchfor)) + '%22'
 
     # set user agent, so we won't get banned...
     userAgents = (
