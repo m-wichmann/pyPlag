@@ -37,6 +37,7 @@ import re
 import urllib
 import urllib2
 import random
+import time
 from optparse import OptionParser
 
 # Threshhold values for the output colors
@@ -44,6 +45,9 @@ THRESH_ABOVE0 = 0
 THRESH_ABOVE2 = 10
 THRESH_ABOVE5 = 100
 THRESH_ABOVE10 = 1000
+
+URL_PRE = 'http://www.google.de/search?hl=de&q=%22'
+URL_POST = '%22'
 
 
 def pyplag():
@@ -56,6 +60,8 @@ def pyplag():
     parser.add_option("-u", "--uppercase", action="store_true", dest="uppercase", help="use upper case detection, only one of s,p and u can be used!")
     parser.add_option("-o", "--outputfile", dest="outputfile", help="output file")
     parser.add_option("-i", "--inputfile", dest="inputfile", help="input file")
+    # TODO: implement this:
+#    parser.add_option("-q", "--quiet", dest="quiet", help="silence the output")
 
     (options, args) = parser.parse_args()
 
@@ -84,6 +90,7 @@ def pyplag():
         print "Outputfile: " + str(outputfile)
     if options.sentence:
         print "Algorithm: Sentence"
+        print "=========="
         data = checkforplag_sentence(inputfile)
         outputtohtml(outputfile, data)
     elif options.paragraph:
@@ -94,6 +101,31 @@ def pyplag():
         print "Algorithm: Uppercase"
         data = checkforplag_uppercase(inputfile)
         outputtohtml(outputfile, data)
+
+
+
+def printStatusBar(maxcount, currentcount):
+    """print a status bar for the plag search"""
+    percent = currentcount / maxcount
+    out = "[ "
+
+    hashcount = int(percent) / 2
+
+    for i in xrange(hashcount):
+        out += "#"
+    for i in xrange(50-hashcount):
+        out += " "
+
+    out += " ] "
+
+    percentstring = str(int(percent))
+    out += percentstring.rjust(3, ' ')
+    out += " %     ["
+
+    # TODO: calc length of maxcount
+    out += str(currentcount) + "/" + str(maxcount) + "]"
+    
+    print out
 
 
 def checkforplag_sentence(path):
@@ -114,12 +146,24 @@ def checkforplag_sentence(path):
         # TODO: a sentece should only start with a capital letter! Otherwise abbreviations like e.g. are also recognized
         sentences = re.split(r'\s*[!?.]\s*', line)
 
+        # TODO: fix this status bar stuff...
+        sentence_count = len(sentences)
+        print str(sentence_count) + " sentences to check..."
+        print "=========="
+
+        i = 0
+
         for sentence in sentences:
+            # print current status:
+            printStatusBar(sentence_count, i)
+            i = i + 1
+
             # clean and split sentences
             cleansentence = sentence.replace(",", "")
             cleansentence = cleansentence.replace(":", "")
             cleansentence = cleansentence.replace("\n", "")
 
+            # search sentence and store results
             count = googlesearch(cleansentence)
             data.append({"word": cleansentence,"count": count})
 
@@ -214,6 +258,7 @@ def outputtohtml(path, data):
 
     fd.write('<div id="legend">')
     fd.write('<table>')
+    fd.write('<tr><td>Genau 0 gefundene Stellen</td></tr>')
     fd.write('<tr><td><span class="above0">Über ' + str(THRESH_ABOVE0) + ' gefundene Stellen</span></td></tr>')
     fd.write('<tr><td><span class="above2">Über ' + str(THRESH_ABOVE2) + ' gefundene Stellen</span></td></tr>')
     fd.write('<tr><td><span class="above5">Über ' + str(THRESH_ABOVE5) + ' gefundene Stellen</span></td></tr>')
@@ -225,6 +270,7 @@ def outputtohtml(path, data):
 
 
     # TODO: don't do the color thing on a word basis, but on a substring basis
+    # this kind of depends on the used algorithm. This is only possible with a defiened data model.
     for entry in data:
         if entry["count"] > THRESH_ABOVE10:
             spanclass = "10"
@@ -248,10 +294,13 @@ def outputtohtml(path, data):
 
 def googlesearch(searchfor):
     # TODO: this parser depends on the language of the result page. This _has_ to be improved!!!
+    # Hopefully the hl=de should force the result page to be german
     """use http google site to search"""
-    url = 'http://www.google.de/search?hl=de&q=%22' + urllib.quote(str(searchfor)) + '%22'
+    #url = 'http://www.google.de/search?hl=de&q=%22' + urllib.quote(str(searchfor)) + '%22'
+    url = URL_PRE + urllib.quote(str(searchfor)) + URL_POST
 
     # set user agent, so we won't get banned...
+    # TODO: do different user agents result in different results?
     userAgents = (
         'Opera/9.80 (X11; Linux i686; U; de) Presto/2.10.229 Version/11.64',
         'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729',
@@ -271,7 +320,18 @@ def googlesearch(searchfor):
     request = urllib2.Request(url, None, headers)
 
     # open url
-    search_response = urllib2.urlopen(request)
+    search_response = None
+
+    # TODO: convert this little hack into something real...
+    # also: check if this wait thing really helps
+    while (search_response == None):
+        try:
+            time.sleep(0.2)
+            search_response = urllib2.urlopen(request)
+        except urllib2.HTTPError:
+            print "HTTPError occured... trying again later..."
+            time.sleep(2)
+    
     search_results = search_response.read()
 
     temp1 = search_results.find("<div id=resultStats>")
